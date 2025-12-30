@@ -1,0 +1,113 @@
+{
+    "target": "http://localhost/examination/firstpage.php",
+    "hostname": "localhost",
+    "ip": "127.0.0.1",
+    "os_guess": "Windows (TTL=128)",
+    "scan_results": [
+        {
+            "port": 21,
+            "state": "Open",
+            "service": "FTP",
+            "risk": "High",
+            "recommendation": "Replace FTP with SFTP/SCP to encrypt traffic."
+        },
+        {
+            "port": 22,
+            "state": "Closed",
+            "service": "SSH",
+            "risk": "Safe",
+            "recommendation": "None required."
+        },
+        {
+            "port": 80,
+            "state": "Open",
+            "service": "HTTP",
+            "risk": "Medium",
+            "recommendation": "Redirect all HTTP traffic to HTTPS (port 443)."
+        },
+        {
+            "port": 443,
+            "state": "Open",
+            "service": "HTTPS",
+            "risk": "Low",
+            "recommendation": "Ensure strong TLS ciphers are enabled."
+        },
+        {
+            "port": 3306,
+            "state": "Open",
+            "service": "MySQL",
+            "risk": "High",
+            "recommendation": "Bind MySQL to localhost or use a VPN. Do not expose to public internet."
+        },
+        {
+            "port": 8080,
+            "state": "Open",
+            "service": "HTTP-Alt",
+            "risk": "Medium",
+            "recommendation": "Restrict access to administrative interfaces (VPN/IP allowlist)."
+        }
+    ],
+    "web_analysis": {
+        "server": "Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12",
+        "headers": {
+            "Date": "Sat, 27 Dec 2025 13:54:30 GMT",
+            "Server": "Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12",
+            "X-Powered-By": "PHP/8.2.12",
+            "Keep-Alive": "timeout=5, max=100",
+            "Connection": "Keep-Alive",
+            "Content-Type": "text/html; charset=UTF-8"
+        }
+    },
+    "vulnerabilities": [
+        {
+            "type": "Open Port 21",
+            "message": "Service FTP is exposed.",
+            "risk": "High",
+            "recommendation": "Replace FTP with SFTP/SCP to encrypt traffic."
+        },
+        {
+            "type": "Open Port 80",
+            "message": "Service HTTP is exposed.",
+            "risk": "Medium",
+            "recommendation": "Redirect all HTTP traffic to HTTPS (port 443)."
+        },
+        {
+            "type": "Open Port 443",
+            "message": "Service HTTPS is exposed.",
+            "risk": "Low",
+            "recommendation": "Ensure strong TLS ciphers are enabled."
+        },
+        {
+            "type": "Open Port 3306",
+            "message": "Service MySQL is exposed.",
+            "risk": "High",
+            "recommendation": "Bind MySQL to localhost or use a VPN. Do not expose to public internet."
+        },
+        {
+            "type": "Open Port 8080",
+            "message": "Service HTTP-Alt is exposed.",
+            "risk": "Medium",
+            "recommendation": "Restrict access to administrative interfaces (VPN/IP allowlist)."
+        },
+        {
+            "type": "Info",
+            "message": "Technology disclosed: PHP/8.2.12",
+            "risk": "Low",
+            "recommendation": "Remove 'X-Powered-By' header to prevent info leakage."
+        },
+        {
+            "type": "Info",
+            "message": "Server banner exposed: Apache/2.4.58 (Win64) OpenSSL/3.1.3 PHP/8.2.12",
+            "risk": "Low",
+            "recommendation": "Configure server to suppress detailed version banners."
+        }
+    ],
+    "risk_level": "High",
+    "metadata": {
+        "duration": "0.66s",
+        "total_ports": 6,
+        "open_count": 5,
+        "scan_time": "2025-12-27 19:24:29"
+    },
+    "ai_summary": "Detected Windows (TTL=128). CRITICAL: Multiple high-profile services exposed. Immediate hardening of MySQL/FTP required."
+}

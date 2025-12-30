@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J-Krypt // Scanner Module</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <canvas id="matrix"></canvas>
+
+    <div class="container-v7">
+        <!-- HEADER -->
+        <header class="header-v7 anim-fade-up">
+            <div class="brand-mark">SCANNER_UNIT</div>
+            <a href="/" class="btn-v7" style="padding: 0.6rem 1.5rem; font-size: 0.8rem; border-width: 1px;">&larr; BACK
+                TO PORTAL</a>
+        </header>
+
+        <!-- SCANNER CORE -->
+        <div class="section-card anim-fade-up delay-1" style="max-width:700px; margin: 0 auto;">
+            <div style="text-align:center; margin-bottom:2.5rem;">
+                <div style="font-size:3.5rem; color:var(--neon-cyan); margin-bottom:1rem;">🌐</div>
+                <h2 style="font-family:var(--font-tech); letter-spacing:4px; margin:0; font-size:1.5rem;">
+                    INITIALIZE_OPERATIONAL_SCAN</h2>
+                <div
+                    style="font-family:var(--font-code); color:rgba(255,255,255,0.4); margin-top:0.8rem; font-size:0.8rem;">
+                    ENTER REMOTE IDENTIFIER (DOMAIN OR IP)</div>
+            </div>
+
+            <form action="/scan" method="post">
+                <input type="text" name="target" class="input-v7" placeholder="e.g. 127.0.0.1" required
+                    autocomplete="off">
+                <button type="submit" class="btn-v7" style="width:100%; margin-top:1.5rem;">EXECUTE PROTOCOL</button>
+            </form>
+
+            {% if error %}
+            <div
+                style="margin-top:2.5rem; text-align:center; color:var(--neon-red); font-family:var(--font-code); background:rgba(255,0,0,0.1); padding:1.5rem; border:1px solid var(--neon-red); border-radius:12px;">
+                🚨 ALERT: {{ error }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- FOOTER STATS -->
+    <div class="quick-stats">
+        SCANNER ID: <span class="stat-highlight">JK-A1</span> &nbsp;|&nbsp; BUFFER: <span
+            class="stat-highlight">READY</span> &nbsp;|&nbsp; STATUS: <span class="stat-highlight">AWAITING_INPUT</span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J-Krypt V11 Command Deck</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- MATRIX BG -->
+    <canvas id="matrix"></canvas>
+
+    <!-- HERO SECTION -->
+    <div class="hero-wrapper anim-fade-up">
+        <h1 class="hero-title">J-KRYPT ANALYZER</h1>
+        <div class="hero-subtitle">ADVANCED CYBER WARFARE PLATFORM // V11</div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div class="dashboard-grid anim-fade-up delay-1">
+
+        <!-- MODULE 1: RECON -->
+        <div class="module-card scanner-module">
+            <div>
+                <div class="card-icon">🔎</div>
+                <div class="card-title">Vulnerability Scanner</div>
+                <div class="card-desc">
+                    Scan targets for open ports, services, and vulnerabilities using Nmap.
+                </div>
+
+                <form action="/scan" method="post">
+                    <input type="text" name="target" class="input-v7" placeholder="www.target.com" required
+                        autocomplete="off">
+                    <button type="submit" class="btn-v11">START SCAN &rarr;</button>
+                </form>
+            </div>
+
+            {% if error %}
+            <div style="margin-top:20px; color:var(--neon-red); font-family:var(--font-code);">
+                ERROR: {{ error }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- MODULE 2: INTEL -->
+        <div class="module-card report-module">
+            <div>
+                <div class="card-icon">📄</div>
+                <div class="card-title">Reports</div>
+                <div class="card-desc">
+                    View and manage scan reports and log analysis results.
+                </div>
+
+                <div class="report-list-container">
+                    {% if reports %}
+                    <table class="net-table" style="margin-top:0;">
+                        {% for r in reports %}
+                        <tr>
+                            <td style="color:white; font-weight:bold;">{{ r.target }}</td>
+                            <td style="color:#666; font-size:0.8rem;">{{ r.timestamp.split(' ')[1:4]|join(' ') }}</td>
+                            <td style="text-align:right;">
+                                <a href="{{ url_for('download_report', filename=r.filename) }}"
+                                    style="color:var(--neon-purple); text-decoration:none; font-weight:bold;">VIEW
+                                    &rarr;</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                    <div style="text-align:center; padding:2rem; color:#666; font-style:italic;">
+                        No operations logged.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <a href="#" class="btn-report" onclick="alert('Archive is managed automatically.')">VIEW REPORTS &rarr;</a>
+        </div>
+
+    </div>
+
+    <!-- FOOTER STATS -->
+    <div class="quick-stats anim-fade-up delay-3">
+        QUICK STATS &nbsp;|&nbsp; SYSTEM STATUS: <span style="color:var(--neon-green)">ONLINE</span> &nbsp;|&nbsp;
+        SECURITY LEVEL: <span style="color:var(--neon-red)">HIGH</span> &nbsp;|&nbsp; NET: <span
+            style="color:var(--neon-blue)">CONNECTED</span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

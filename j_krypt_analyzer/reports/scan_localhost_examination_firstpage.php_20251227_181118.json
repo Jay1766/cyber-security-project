@@ -1,0 +1,70 @@
+{
+    "target": "http://localhost/examination/firstpage.php",
+    "hostname": "localhost",
+    "ip": "127.0.0.1",
+    "os_guess": "Windows (TTL=128)",
+    "scan_results": [
+        {
+            "port": 21,
+            "state": "Closed",
+            "service": "FTP",
+            "risk": "Safe",
+            "recommendation": "None required."
+        },
+        {
+            "port": 22,
+            "state": "Closed",
+            "service": "SSH",
+            "risk": "Safe",
+            "recommendation": "None required."
+        },
+        {
+            "port": 80,
+            "state": "Closed",
+            "service": "HTTP",
+            "risk": "Safe",
+            "recommendation": "None required."
+        },
+        {
+            "port": 443,
+            "state": "Closed",
+            "service": "HTTPS",
+            "risk": "Safe",
+            "recommendation": "None required."
+        },
+        {
+            "port": 3306,
+            "state": "Closed",
+            "service": "MySQL",
+            "risk": "Safe",
+            "recommendation": "None required."
+        },
+        {
+            "port": 8080,
+            "state": "Open",
+            "service": "HTTP-Alt",
+            "risk": "Medium",
+            "recommendation": "Restrict access to administrative interfaces (VPN/IP allowlist)."
+        }
+    ],
+    "web_analysis": {
+        "server": "Unknown",
+        "headers": {}
+    },
+    "vulnerabilities": [
+        {
+            "type": "Open Port 8080",
+            "message": "Service HTTP-Alt is exposed.",
+            "risk": "Medium",
+            "recommendation": "Restrict access to administrative interfaces (VPN/IP allowlist)."
+        }
+    ],
+    "risk_level": "Medium",
+    "metadata": {
+        "duration": "0.59s",
+        "total_ports": 6,
+        "open_count": 1,
+        "scan_time": "2025-12-27 18:11:16"
+    },
+    "ai_summary": "Detected Windows (TTL=128). WARNING: Insecure services (HTTP/SSH) detected. Review firewall and encryption policies."
+}

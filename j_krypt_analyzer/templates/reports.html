@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J-Krypt // Intel Archive</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <canvas id="matrix"></canvas>
+
+    <div class="container-v7">
+        <!-- HEADER -->
+        <header class="header-v7 anim-fade-up">
+            <div class="brand-mark" style="color:var(--neon-purple);">INTEL_ARCHIVE</div>
+            <a href="/" class="btn-v7"
+                style="padding: 0.6rem 1.5rem; font-size: 0.8rem; border-width: 1px; border-color:var(--neon-purple); color:var(--neon-purple);">&larr;
+                BACK TO PORTAL</a>
+        </header>
+
+        <!-- ARCHIVE CORE -->
+        <div class="section-card anim-fade-up delay-1">
+            <div class="section-title">STORED INTELLIGENCE LOGS</div>
+
+            {% if reports %}
+            <table class="net-table">
+                <thead>
+                    <tr>
+                        <th style="color:var(--neon-purple); width:30%;">TARGET_ID</th>
+                        <th style="width:30%;">TIMESTAMP</th>
+                        <th style="width:25%;">OPERATIONAL_DATA</th>
+                        <th style="text-align:right;">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in reports %}
+                    <tr class="anim-fade-up" style="--i: {{ loop.index0 }};">
+                        <td style="font-weight:700; color:#fff; font-size:1.15rem;">{{ r.target }}</td>
+                        <td style="color:rgba(255,255,255,0.4); font-size:0.9rem;">{{ r.timestamp }}</td>
+                        <td style="font-family:var(--font-code); color:#888; font-size:0.8rem;">{{ r.filename }}</td>
+                        <td style="text-align:right;">
+                            <a href="{{ url_for('view_report', filename=r.filename) }}" target="_blank" class="btn-v7"
+                                style="padding:0.6rem 1.2rem; font-size:0.8rem; border-color:var(--neon-purple); color:var(--neon-purple);">VIEW_REPORT</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div style="text-align:center; padding:6rem; color:rgba(255,255,255,0.3);">
+                <div style="font-size:5rem; margin-bottom:2rem; opacity:0.3;">📂</div>
+                <div style="font-family:var(--font-tech); letter-spacing:4px; font-size:1.2rem;">NO CLASSIFIED DATA
+                    LOGGED</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- FOOTER STATS -->
+    <div class="quick-stats">
+        ARCHIVE_STATUS: <span class="stat-highlight">DORMANT</span> &nbsp;|&nbsp; ENCRYPTION: <span
+            class="stat-highlight">AES-256</span> &nbsp;|&nbsp; ACCESS: <span class="stat-highlight">RECON_LEVEL</span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

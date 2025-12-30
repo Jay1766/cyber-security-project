@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J-Krypt Portal // Advanced Recon</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- CYBER-GRID BACKGROUND -->
+    <div id="cyber-bg">
+        <canvas id="cyber-canvas"></canvas>
+    </div>
+
+    <canvas id="matrix" style="opacity: 0.1;"></canvas>
+
+    <div class="container-v7">
+        <!-- HERO SECTION -->
+        <div class="portal-hero anim-fade-up">
+            <h1 class="hero-title">MISSION_CONTROL</h1>
+            <div class="hero-subtitle">J-KRYPT // ADAPTIVE THREAT ANALYSIS PLATFORM</div>
+        </div>
+
+        <!-- PORTAL NAVIGATION GRID -->
+        <div class="dashboard-grid">
+
+            <!-- NAV COLUMN 1: SCANNER -->
+            <a href="/scanner" class="module-card anim-fade-up" style="--i: 1;">
+                <div class="card-icon">🔎</div>
+                <div class="card-title">PRIMARY_SCANNER</div>
+                <div class="card-desc">
+                    Deploy active intelligence probes for deep-packet inspection, port auditing, and service banner
+                    analysis.
+                </div>
+                <div class="btn-v7" style="width:100%; padding:0.8rem; font-size:0.85rem;">INITIALIZE_PROBE</div>
+            </a>
+
+            <!-- NAV COLUMN 2: REPORTS -->
+            <a href="/reports" class="module-card anim-fade-up" style="--i: 2;">
+                <div class="card-icon" style="color:var(--neon-purple);">📄</div>
+                <div class="card-title">INTELLIGENCE_VAULT</div>
+                <div class="card-desc">
+                    Retrieve decrypted operational logs and historical vulnerability matrices from the persistent data
+                    archive.
+                </div>
+                <div class="btn-v7"
+                    style="width:100%; padding:0.8rem; font-size:0.85rem; border-color:var(--neon-purple); color:var(--neon-purple);">
+                    ACCESS_ARCHIVE</div>
+            </a>
+
+            <!-- NAV COLUMN 3: SIDEBAR (Real World Info) -->
+            <div class="portal-sidebar anim-fade-up" style="--i: 3;">
+
+                <!-- System Health Widget -->
+                <div class="info-widget">
+                    <span class="widget-label">SYSTEM_DIAGNOSTICS</span>
+                    <div class="system-stat"><span>UPTIME</span> <span class="stat-val">99.99%</span></div>
+                    <div class="system-stat"><span>PROBE_LOAD</span> <span class="stat-val">OPTIMAL</span></div>
+                    <div class="system-stat"><span>UPLINK</span> <span class="stat-val">ENCRYPTED</span></div>
+                </div>
+
+                <!-- Threat Intelligence Widget -->
+                <div class="info-widget">
+                    <span class="widget-label">THREAT_INTEL_FEED</span>
+                    <div class="news-item"><span>[SEC]</span> Zero-day probe detected in sector-7</div>
+                    <div class="news-item"><span>[SYS]</span> Neural-net background active</div>
+                    <div class="news-item"><span>[NET]</span> 128-bit handshake established</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER STATS -->
+    <div class="quick-stats anim-fade-up delay-3">
+        SYSTEM READY &nbsp;|&nbsp; MODULE SELECT REQUIRED &nbsp;|&nbsp; UPLINK: <span
+            class="stat-highlight">SECURE</span> &nbsp;|&nbsp; V12.5-MASTER
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cyber_bg.js') }}"></script>
+</body>
+
+</html>

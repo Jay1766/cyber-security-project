@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Security Assessment Report - {{ results.target }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            border: none;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .meta-info {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+
+        .summary-box {
+            background: #f9f9f9;
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .score-gauge {
+            text-align: center;
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .score-High {
+            color: #e74c3c;
+        }
+
+        .score-Medium {
+            color: #f39c12;
+        }
+
+        .score-Low {
+            color: #27ae60;
+        }
+
+        /* Text Colors */
+        .text-High {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .text-Medium {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .text-Low {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .text-Safe {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .vuln-item {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .vuln-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .risk-badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .rb-High {
+            background: #e74c3c;
+        }
+
+        .rb-Medium {
+            background: #f39c12;
+        }
+
+        .rb-Low {
+            background: #27ae60;
+        }
+
+        .recommendation {
+            background: #e8f6f3;
+            padding: 10px;
+            margin-top: 10px;
+            border-left: 4px solid #1abc9c;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            h2 {
+                page-break-before: always;
+            }
+
+            h2:first-of-type {
+                page-break-before: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER PAGE -->
+    <div style="text-align: center; margin-top: 50px; margin-bottom: 100px;">
+        <h1>Web Vulnerability Assessment Report</h1>
+        <div class="meta-info">
+            <p><strong>Target:</strong> {{ results.target }}</p>
+            <p><strong>Date:</strong> {{ results.metadata.scan_time }}</p>
+            <p><strong>Tool:</strong> J-Krypt Analyzer V10</p>
+        </div>
+    </div>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <h2>1. Executive Summary</h2>
+    <div class="summary-box">
+        <p>This report outlines the findings of a non-intrusive security assessment performed on <strong>{{
+                results.target }}</strong>.</p>
+
+        <div class="score-gauge score-{{ results.risk_level }}">
+            Risk Level: {{ results.risk_level.upper() }}
+        </div>
+
+        <p><strong>Assessment Overview:</strong> {{ results.ai_summary }}</p>
+    </div>
+
+    <!-- TARGET INFO -->
+    <h2>2. Target Availability & Information</h2>
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td>{{ results.target }}</td>
+        </tr>
+        <tr>
+            <td>Resolved IP</td>
+            <td>{{ results.ip }}</td>
+        </tr>
+        <tr>
+            <td>Hostname</td>
+            <td>{{ results.hostname }}</td>
+        </tr>
+        <tr>
+            <td>Operating System</td>
+            <td>{{ results.os_guess }}</td>
+        </tr>
+        <tr>
+            <td>Web Server</td>
+            <td>{{ results.web_analysis.get('server', 'Unknown') }}</td>
+        </tr>
+    </table>
+
+    <!-- PORT SCAN -->
+    <h2>3. Port Scan Results</h2>
+    {% if results.scan_results %}
+    <table>
+        <tr>
+            <th>Port</th>
+            <th>Service</th>
+            <th>State</th>
+            <th>Risk</th>
+        </tr>
+        {% for item in results.scan_results %}
+        <tr>
+            <td>{{ item.port }}</td>
+            <td>{{ item.service }}</td>
+            <td>{{ item.state }}</td>
+            <td class="text-{{ item.risk }}">{{ item.risk }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No open ports were detected during this scan.</p>
+    {% endif %}
+
+    <!-- VULNERABILITIES -->
+    <h2>4. Detected Vulnerabilities & Remediation</h2>
+    {% if results.vulnerabilities %}
+    {% for vuln in results.vulnerabilities %}
+    <div class="vuln-item">
+        <div class="vuln-header">
+            <span>{{ vuln.type }}</span>
+            <span class="risk-badge rb-{{ vuln.risk }}">{{ vuln.risk }}</span>
+        </div>
+        <div><strong>Description:</strong> {{ vuln.message }}</div>
+        <div class="recommendation">
+            <strong>Corrective Action:</strong> {{ vuln.recommendation }}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No significant vulnerabilities were identified within the scope of this scan.</p>
+    {% endif %}
+
+    <!-- DISCLAIMER -->
+    <hr style="margin-top: 50px;">
+    <p style="font-size: 0.8em; color: #999; text-align: center;">
+        CONFIDENTIAL: This report is for educational and authorized testing purposes only.
+        Generated by J-Krypt Analyzer.
+    </p>
+
+</body>
+
+</html>

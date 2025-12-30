@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J-Krypt // Recon Findings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <canvas id="matrix"></canvas>
+
+    <div class="container-v7">
+        <!-- HEADER -->
+        <header class="header-v7 anim-fade-up">
+            <div>
+                <div class="brand-mark">RECON_FINDINGS</div>
+                <div
+                    style="font-family:var(--font-code); color:rgba(255,255,255,0.4); font-size:0.8rem; margin-top:5px;">
+                    SESSION_ID: {{ results.metadata.scan_time }}</div>
+            </div>
+            <div style="display:flex; gap:1.5rem; align-items:center;">
+                {% if report_file %}
+                <a href="{{ url_for('view_report', filename=report_file) }}" target="_blank" class="btn-v7"
+                    style="padding: 0.6rem 1.5rem; font-size: 0.8rem; border-width: 1px; border-color:var(--neon-green); color:var(--neon-green);">VIEW
+                    FULL REPORT</a>
+                {% endif %}
+                <a href="/" class="btn-v7" style="padding: 0.6rem 1.5rem; font-size: 0.8rem; border-width: 1px;">&larr;
+                    PORTAL</a>
+            </div>
+        </header>
+
+        <!-- 1. HERO SECTION (TARGET + RISK) -->
+        <div class="section-card anim-fade-up delay-1">
+            <div class="section-title">TARGET_RECON_OVERVIEW</div>
+
+            <div class="hero-grid">
+                <!-- Target Details -->
+                <ul class="target-list">
+                    <li class="t-item">
+                        <span class="t-label">TARGET_IDENTIFIER</span>
+                        <span class="t-val">{{ results.target }}</span>
+                    </li>
+                    <li class="t-item">
+                        <span class="t-label">NETWORK_ADDRESS</span>
+                        <span class="t-val">{{ results.ip }}</span>
+                    </li>
+                    <li class="t-item">
+                        <span class="t-label">RESOLVED_HOSTNAME</span>
+                        <span class="t-val">{{ results.hostname or 'UNRESOLVED' }}</span>
+                    </li>
+                    <li class="t-item">
+                        <span class="t-label">OPERATIVE_OS</span>
+                        <span class="t-val">{{ results.os_guess }}</span>
+                    </li>
+                    <li class="t-item">
+                        <span class="t-label">SCAN_DURATION</span>
+                        <span class="t-val">{{ results.metadata.duration }}</span>
+                    </li>
+                </ul>
+
+                <!-- RISK RING -->
+                <div class="risk-ring-container level-{{ results.risk_level }}">
+                    <div class="risk-ring-outer"></div>
+                    <div class="risk-ring-inner">
+                        <div class="risk-score-big">{{ results.risk_level }}</div>
+                        <div class="risk-label-big">RISK_SCORE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. NETWORK TOPOLOGY -->
+        <div class="section-card anim-fade-up delay-2">
+            <div class="section-title">NETWORK_TOPOLOGY_MAP</div>
+
+            {% if results.scan_results %}
+            <div class="topo-grid">
+                {% for item in results.scan_results %}
+                <div class="topo-node level-{{ item.risk }} anim-fade-up" style="--i: {{ loop.index0 }};">
+                    <div class="node-header">
+                        <div class="node-port">{{ item.port }}</div>
+                        <span class="status-badge {{ 'sb-open' if item.state == 'Open' else 'sb-closed' }}">
+                            {{ item.state.upper() }}
+                        </span>
+                    </div>
+                    <div class="node-service">{{ item.service }}</div>
+                    <div class="node-meta">RISK: {{ item.risk.upper() }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="text-align:center; padding:4rem; color:rgba(255,255,255,0.2); font-family:var(--font-code);">NO
+                ACTIVE PROBES RESPONDED</div>
+            {% endif %}
+        </div>
+
+        <!-- 3. AI SUMMARY & ANOMALIES -->
+        <div class="section-card anim-fade-up delay-3">
+            <div class="section-title">INTELLIGENCE_ANALYTICS</div>
+
+            <div
+                style="margin-bottom:1.5rem; color:rgba(255,255,255,0.8); line-height:1.6; border-left:4px solid var(--neon-purple); padding-left:1.5rem; font-size:0.95rem; font-style:italic;">
+                {{ results.ai_summary }}
+            </div>
+
+            {% if results.vulnerabilities %}
+            {% for vuln in results.vulnerabilities %}
+            <div class="vuln-card-v7 anim-fade-up level-{{ vuln.risk }}"
+                style="--i: {{ loop.index0 }}; padding: 1.2rem;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.8rem;">
+                    <div style="font-family:var(--font-tech); font-size:1.1rem; letter-spacing:1px; color:#fff;">{{
+                        vuln.type }}</div>
+                    <span class="status-badge"
+                        style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); font-size:0.65rem; padding:0.2rem 0.6rem;">{{
+                        vuln.risk.upper() }}</span>
+                </div>
+                <div style="color:rgba(255,255,255,0.6); line-height:1.5; margin-bottom:1rem; font-size:0.85rem;">{{
+                    vuln.message }}</div>
+                <div
+                    style="font-family:var(--font-code); font-size:0.75rem; color:var(--neon-green); background:rgba(10,255,104,0.05); padding:0.8rem; border-radius:8px;">
+                    <span style="font-weight:800; opacity:0.7;">RECOMMENDATION:</span> {{ vuln.recommendation }}
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div style="text-align:center; padding:2rem; opacity:0.3; font-family:var(--font-code);">NO ANOMALIES
+                DETECTED</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- FOOTER STATS -->
+    <div class="quick-stats">
+        DATA_INTEGRITY: <span class="stat-highlight">VERIFIED</span> &nbsp;|&nbsp; ANALYSIS_ENGINE: <span
+            class="stat-highlight">ACTIVE</span> &nbsp;|&nbsp; OPERATOR: <span class="stat-highlight">ROOT</span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
